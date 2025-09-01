@@ -1,0 +1,34 @@
+I have very confusing bug i don't know from where it come:
+bug detail:
+this is my User schema i used prisma: (
+  model User {
+  id        Int      @id @default(autoincrement())
+  username  String
+  password  String
+  createdAt DateTime @default(now())
+  posts     Post[]
+)
+
+this exact same schema is in database as well but when I fetch (users: async () => {
+      const users = await prisma.user.findMany({});
+      console.log(users);
+      return usersHardCoded; // i just a random user for now
+    }) this is resolver->Query code blow user fn
+
+ Bug: but when i run this on apollo studio i get error there: ("message": "\nInvalid `prisma.user.findMany()` invocation:\n\n\nThe column `23dBlog.User.name` does not exist in the current database.",
+      "locations": [
+        {
+          "line": 8,
+          "column": 3
+        }
+      ],
+      "path": [
+        "users"
+      ],)
+      this tell that name is not on schema/database while my schema and db desc is different 
+      i don't know where is the error:
+      i have notice this that:
+      I use ( output   = "../generated/prisma") i prisma file 
+      but when i import form ("../generated/prisma") this location it shows that it is not export module i thing it use common.js module
+      is there any way to change ("../generated/prisma") this to module type?
+

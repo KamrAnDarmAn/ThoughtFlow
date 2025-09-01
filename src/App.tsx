@@ -1,51 +1,45 @@
-import { Toaster } from "@/components/ui/sonner";
-import Hero from "./components/Hero";
-import Navbar from "./components/Navbar";
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import { UserContext } from "./context/user-context";
-import { useContext, useState, useEffect } from "react";
+import Navbar from './components/Navbar';
+import { Blogs } from './components/Blogs';
+import CreateBlog from './components/pages/CreateBlog';
+import Login from './components/pages/Login';
+import Register from './components/pages/Register';
+import SingleBlog from './components/pages/SingleBlog';
+import Profile from './components/pages/Profile';
+import MyProfile from './components/pages/MyProfile';
 
-const App = () => {
-  const { userInfo } = useContext(UserContext);
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem('token');
   const location = useLocation();
-  const [isLoadingUser, setIsLoadingUser] = useState(true);
 
-  useEffect(() => {
-    setIsLoadingUser(false); // Resolve loading once userInfo is set
-  }, [userInfo]);
-
-
-  if (isLoadingUser) {
-    return (
-      <main className="flex flex-col px-5 items-center justify-center bg-[#C9CED6] dark:bg-[#0B101B] min-h-screen">
-        <Navbar />
-        <div className="text-center text-gray-500 dark:text-gray-400 py-4">
-          <p>Loading user...</p>
-        </div>
-      </main>
-    );
+  if (!token) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
+  return children;
+};
 
+
+const App = () => {
   return (
-    <main className="flex flex-col px-5 items-center justify-center bg-[#C9CED6] dark:bg-[#0B101B] min-h-screen">
+    <main className="dark">
       <Navbar />
-      <Toaster />
       <Routes>
+        <Route path="/" element={<Blogs />} />
+        <Route path="/posts/:id" element={<SingleBlog />} />
+        <Route path="/profile/:userId" element={<Profile />} />
+        <Route path="/my-profile" element={<MyProfile />} />
         <Route
-          path="/"
+          path="/create"
           element={
-            userInfo?.token ? (
-              <Hero />
-            ) : (
-              <Navigate to="/login" state={{ from: location }} replace />
-            )
+            <ProtectedRoute>
+              <CreateBlog />
+            </ProtectedRoute>
           }
         />
-        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </main>
   );
