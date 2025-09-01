@@ -1,102 +1,94 @@
-# Snipr
+# ThoughtFlow 📝
 
-Snipr is a URL shortener built with **Node.js**, **Express**, **Prisma**, and **MySQL**.  
-It shortens long URLs, stores them in a database, and generates a unique **QR code** for each shortened link.  
-Scanning the QR code instantly redirects users to the original URL.
+A modern blogging platform where users can connect, share thoughts, and interact with each other. Built with a powerful tech stack and designed for scalability and clean user experience.
 
 ---
 
-## 🚀 Features
+## 🚀 Tech Stack
 
-- Shorten any long URL with ease
-- Store URLs securely in MySQL using Prisma ORM
-- Auto-generate unique QR codes for each shortened URL
-- Redirect via short link or QR code scan
-- RESTful API for integration
-
----
-
-## 🛠 Tech Stack
-
-- **Backend:** Node.js, Express
+- **Frontend:** React, Shadcn UI + Aceternity UI, TailwindCSS
+- **Backend:** Node.js, Express.js
 - **Database:** MySQL with Prisma ORM
-- **Utilities:** QR Code Generator (`qrcode` package)
 
 ---
 
-## 📦 Installation
+## ✨ Features
 
-### 1️⃣ Clone the repository
+- 🔹 **User Authentication** – secure login & signup
+- 🔹 **Follow / Unfollow Users** – build your own network
+- 🔹 **Create & Manage Posts** – share blogs with rich text
+- 🔹 **Comments System** – interact on posts in real time
+- 🔹 **Profile Pages** – view your profile and explore others
+- 🔹 **Responsive Design** – optimized for all devices
+- 🔹 **Scalable Architecture** – clean and extendable codebase
 
-```bash
-git clone https://github.com/KamrAnDarmAn/snipr.git
-cd snipr
+---
+
+## 📂 Project Structure
+
 ```
 
-### 2️⃣ Install dependencies
+/client → React frontend
+/server → Node.js + Express backend
+/prisma → Prisma schema and migrations
+
+```
+
+---
+
+## ⚡ Getting Started
+
+### 1. Clone the repo
 
 ```bash
+git clone https://github.com/KamrAnDarmAn/ThoughtFlow.git
+cd ThoughtFlow
+```
+
+### 2. Install dependencies
+
+```bash
+# Frontend
+npm install
+
+# Backend
+cd api
 npm install
 ```
 
-### 3️⃣ Configure environment variables
+### 3. Setup database
 
-Create a `.env` file in the root directory and set:
-
-```env
-DATABASE_URL="mysql://user:password@localhost:3306/snipr"
-PORT=5000
-```
-
-### 4️⃣ Run Prisma migrations
+- Create a MySQL database
+- Configure `.env` file with your database URL
+- Run Prisma migrations:
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate dev
 ```
 
-### 5️⃣ Start the server
+### 4. Start the project
 
 ```bash
-npm start
+# Backend
+cd api
+npm run dev
+
+# Frontend
+npm run dev
 ```
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome!
-If you’d like to help improve Snipr:
-
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m "Add your feature"`)
-4. Push to your branch (`git push origin feature/your-feature`)
-5. Open a **Pull Request**
+Contributions are welcome! Fork the repo and submit a pull request.
 
 ---
 
-## 📜 License – MIT
+## 📜 License
 
-MIT License
+MIT License – feel free to use and modify.
 
-Copyright (c) 2025 Kamran Darman
+---
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-# ThoughtFlow
-# ThoughtFlow
+👉 I kept it **developer-friendly, clean, and professional**.
