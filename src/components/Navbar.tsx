@@ -1,36 +1,156 @@
-import { Button } from './ui/button';
-import { LogIn, LogOut } from 'lucide-react';
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { UserContext } from '@/context/user-context';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useTheme } from './theme-provider';
+import { Moon, Sun } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import {
+    Navbar,
+    NavBody,
+    NavItems,
+    MobileNav,
+    NavbarLogo,
+    NavbarButton,
+    MobileNavHeader,
+    MobileNavToggle,
+    MobileNavMenu,
+} from '../components/ui/resizeable-navbar';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
-const Navbar = () => {
-    const { userInfo, logout } = useContext(UserContext);
+const navItems = [
+    {
+        name: 'Home',
+        link: '/',
+    },
+];
 
+export default function NavbarResizable() {
+    const { theme, setTheme } = useTheme();
+    const { user, logout } = useAuth();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        setIsMobileMenuOpen(false);
+        navigate('/login');
+    };
 
     return (
-        <nav className="w-full top-0 bg-white dark:bg-gray-800 shadow- flex items-center justify-between px-4 py-3">
-            <p className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#144EE3] via-[#EB568E] via-64% to-[#144EE3]">
-                <Link to='/'>Snipr</Link>
-            </p>
-            <div className="flex space-x-4">
-                {userInfo?.token ? (
-                    <Button onClick={logout} variant="outline" size="default">
-                        Logout <LogOut />
-                    </Button>
-                ) : (
-                    <>
-                        <Link to='/login'>
-                            <Button variant="outline" size="default">Login <LogIn /></Button>
+        <div className="relative w-full">
+            <Navbar>
+                {/* Desktop Navigation */}
+                <NavBody>
+                    <NavbarLogo />
+                    <NavItems items={navItems} />
+                    <div className="flex items-center gap-4">
+                        {user ? (
+                            <>
+                                <NavbarButton variant="secondary">
+                                    <Link to="/create">Create</Link>
+                                </NavbarButton>
+                                <NavbarButton variant="secondary" onClick={handleLogout}>
+                                    Logout
+                                </NavbarButton>
+                            </>
+                        ) : (
+                            <>
+                                <NavbarButton variant="secondary">
+                                    <Link to="/login">Login</Link>
+                                </NavbarButton>
+                                <NavbarButton variant="secondary">
+                                    <Link to="/register">Register</Link>
+                                </NavbarButton>
+                            </>
+                        )}
+                        {/* <NavbarButton
+                            variant="primary"
+                            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                        >
+                            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+                        </NavbarButton> */}
+                        <Link to='/my-profile'>
+                            <Avatar className="h-10 w-10">
+                                <AvatarFallback >
+                                    {user?.firstName[0]}{user?.lastName[0]}
+                                </AvatarFallback>
+                            </Avatar>
                         </Link>
-                        <Link to='/register'>
-                            <Button variant="default" size="default">Register Now</Button>
-                        </Link>
-                    </>
-                )}
-            </div>
-        </nav>
-    );
-};
+                    </div>
+                </NavBody>
 
-export default Navbar;
+                {/* Mobile Navigation */}
+                <MobileNav>
+                    <MobileNavHeader>
+                        <NavbarLogo />
+                        <MobileNavToggle
+                            isOpen={isMobileMenuOpen}
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        />
+                    </MobileNavHeader>
+
+                    <MobileNavMenu
+                        isOpen={isMobileMenuOpen}
+                        onClose={() => setIsMobileMenuOpen(false)}
+                    >
+                        {navItems.map((item, idx) => (
+                            <Link
+                                key={`mobile-link-${idx}`}
+                                to={item.link}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="relative text-neutral-600 dark:text-neutral-300"
+                            >
+                                <span className="block">{item.name}</span>
+                            </Link>
+                        ))}
+                        <div className="flex w-full flex-col gap-4">
+                            {user ? (
+                                <>
+                                    <NavbarButton
+                                        variant="secondary"
+                                        className="w-full"
+                                        onClick={() => {
+                                            setIsMobileMenuOpen(false);
+                                            navigate('/create');
+                                        }}
+                                    >
+                                        Create
+                                    </NavbarButton>
+                                    <NavbarButton
+                                        variant="secondary"
+                                        className="w-full"
+                                        onClick={handleLogout}
+                                    >
+                                        Logout
+                                    </NavbarButton>
+                                </>
+                            ) : (
+                                <>
+                                    <NavbarButton
+                                        variant="secondary"
+                                        className="w-full"
+                                        onClick={() => {
+                                            setIsMobileMenuOpen(false);
+                                            navigate('/login');
+                                        }}
+                                    >
+                                        Login
+                                    </NavbarButton>
+                                    <NavbarButton
+                                        variant="secondary"
+                                        className="w-full"
+                                        onClick={() => {
+                                            setIsMobileMenuOpen(false);
+                                            navigate('/register');
+                                        }}
+                                    >
+                                        Register
+                                    </NavbarButton>
+                                </>
+                            )}
+                        </div>
+                    </MobileNavMenu>
+                </MobileNav>
+            </Navbar>
+        </div>
+    );
+}
